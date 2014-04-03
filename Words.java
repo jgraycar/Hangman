@@ -9,6 +9,8 @@ import java.util.Random;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
@@ -32,10 +34,14 @@ public class Words {
 
     public void makeWords() {
         String filename = this.numLets + "letters.txt";
-        filename = "/Users/Joel/CompSci/hgm/" + filename;
+        //filename = "/Users/Joel/CompSci/hgm/" + filename;
         String word;
         try {
-            BufferedReader wordFile = new BufferedReader(new FileReader(filename));
+            InputStream resource =
+                hgm.Words.class.getClassLoader().getResourceAsStream(filename);
+            BufferedReader wordFile =
+                new BufferedReader(new InputStreamReader(resource));
+            //BufferedReader wordFile = new BufferedReader(new FileReader(filename));
             for (word = wordFile.readLine(); word != null; word = wordFile.readLine()) {
                 this.words.add(word);
             }

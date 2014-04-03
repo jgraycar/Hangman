@@ -40,7 +40,7 @@ public class Hangman {
         }
         Words wordsMaker = new Words(numLets);
         wordsMaker.makeWords();
-        String secret = wordsMaker.getWord();
+        setSecret(wordsMaker.getWord());
         System.out.println(secret);
     }
 
@@ -52,4 +52,10 @@ public class Hangman {
             return false;
         }
     }
+
+    public static void setSecret(String word) {
+        secret = word;
+    }
+
+    private static String secret = "";
 }
