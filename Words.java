@@ -1,4 +1,4 @@
-package hangman;
+package hgm;
 
 import java.lang.Integer;
 import java.lang.NumberFormatException;
@@ -32,7 +32,7 @@ public class Words {
 
     public void makeWords() {
         String filename = this.numLets + "letters.txt";
-        filename = "/Users/Joel/CompSci/hangman/" + filename;
+        filename = "/Users/Joel/CompSci/hgm/" + filename;
         String word;
         try {
             BufferedReader wordFile = new BufferedReader(new FileReader(filename));

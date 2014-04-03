@@ -1,4 +1,4 @@
-package hangman;
+package hgm;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class Format {
     protected static BufferedReader getFile(String filename)
         throws FileNotFoundException {
         BufferedReader str;
-        filename = "/Users/Joel/CompSci/hangman/" + filename;
+        filename = "/Users/Joel/CompSci/hgm/" + filename;
         str = new BufferedReader(new FileReader(filename));
         return str;
     }
@@ -34,7 +34,7 @@ public class Format {
             for (String line = file.readLine(); line != null; line = file.readLine()) {
                 String[] parts = line.split("\\p{Blank}+");
                 for (String s : parts) {
-                    words.add(s);
+                    words.add(s.toLowerCase());
                 }
             }
             FileWriter fileW = new FileWriter(filename);

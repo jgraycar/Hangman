@@ -1,4 +1,4 @@
-package hangman;
+package hgm;
 
 import java.lang.Integer;
 import java.lang.NumberFormatException;
@@ -23,8 +23,14 @@ public class Hangman {
             System.out.print("> ");
             String line = inp.nextLine();
             if (checkInt(line)) {
-                numLets = line;
-                cont = false;
+                try {
+                    int num = Integer.parseInt(line);
+                    if (num > 0 && num < 15) {
+                        numLets = line;
+                        cont = false;
+                    }
+                } catch (NumberFormatException num) {
+                }
             } else {
                 System.out.printf("Sorry, %s is not a number!", line);
                 System.out.println(" Please input a number between 1 and 12.");
