@@ -25,17 +25,17 @@ public class Hangman {
             if (checkInt(line)) {
                 try {
                     int num = Integer.parseInt(line);
-                    if (num > 0 && num < 15) {
+                    if (num > 1 && num < 15) {
                         numLets = line;
                         cont = false;
                     } else {
-                        System.out.println("Please input a number between 1 and 14.");
+                        System.out.println("Please input a number between 2 and 14.");
                     }
                 } catch (NumberFormatException num) {
                 }
             } else {
                 System.out.printf("Sorry, %s is not a number!", line);
-                System.out.println(" Please input a number between 1 and 14.");
+                System.out.println(" Please input a number between 2 and 14.");
             }
         }
         Words wordsMaker = new Words(numLets);
