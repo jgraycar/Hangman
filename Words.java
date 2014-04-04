@@ -33,6 +33,8 @@ public class Words {
     }
 
     public void makeWords() {
+        WordBank wordBank = new WordBank2();
+        wordBank.giveWords();
         String filename = this.numLets + "letters.txt";
         String word;
         try {
