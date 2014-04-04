@@ -46,10 +46,10 @@ public class Hangman {
                 System.out.println(" Please input a number between 2 and 14.");
             }
         }
-        Words wordsMaker = new Words(numLetsStr);
+        wordsMaker = new Words(numLetsStr);
         wordsMaker.makeWords();
         setSecret(wordsMaker.getWord());
-        System.out.println("And how many lives do you want?");
+        System.out.println("And how many lives do you want? Type '0' to let me choose.");
         cont = true;
         while (cont) {
             System.out.print("> ");
@@ -60,6 +60,9 @@ public class Hangman {
                     if (num > 0 && num < 100) {
                         lives = num;
                         cont = false;
+                    } else if (num == 0) {
+                        Random rand = new Random();
+                        
                     } else {
                         System.out.println("Please input a number between 1 and 99.");
                     }
@@ -79,11 +82,12 @@ public class Hangman {
     private static void playGame() {
         ArrayList<Character> guessed = new ArrayList<Character>(26);
         boolean cont = true;
+        boolean firstTime = true;
         Scanner inp = new Scanner(new InputStreamReader(System.in));
-        char[] guesses = new char[secret.length()];
+        guesses = new char[secret.length()];
         Arrays.fill(guesses, '_');
-        printGuesses(guesses);
-        int timesWrong = 0;
+        printGuesses();
+        timesWrong = 0;
         while (cont) {
             ArrayList<Integer> indices = new ArrayList<Integer>();
             System.out.print("> ");
@@ -93,7 +97,7 @@ public class Hangman {
                     System.out.println("Byebye!");
                     System.exit(0);
                 } else if (line.equals("cheat")) {
-                    cheat(guesses);
+                    System.out.println("secret word: " + secret);
                     continue;
                 } else {
                     System.out.println("You can only enter one letter at a time!");
@@ -108,39 +112,57 @@ public class Hangman {
                 continue;
             }
             guessed.add(guess);
+            if (!firstTime) {
+                wordsMaker.clearWordsByLetter(guess);
+            }
             int index = secret.indexOf(guess);
             while (index != -1) {
                 indices.add(index);
                 index = secret.indexOf(guess, index + 1);
             }
             if (indices.size() > 0) {
+                if (!firstTime && wordsMaker.canSwitch()) {
+                    setSecret(wordsMaker.getWord());
+                    cont = wrongGuess(guess);
+                    continue;
+                }
+                firstTime = false;
                 for (Integer i : indices) {
                     guesses[i.intValue()] = guess;
                 }
-                printGuesses(guesses);
+                wordsMaker.clearWordsBySpot(guesses);
+                printGuesses();
                 timesWrong = 0;
             } else {
-                lives -= 1;
-                timesWrong += 1;
-                System.out.printf("Nope! There are no %c's in my word.\n", guess);
-                if (lives > 0) {
-                    System.out.printf("You have %d lives left!\n", lives);
-                    if (timesWrong > 3) {
-                        printGuesses(guesses);
-                        timesWrong = 0;
-                    }
-                }
+                cont = wrongGuess(guess);
+                wordsMaker.clearWordsByLetter(guess);
+                continue;
             }
-            if (finished(guesses)) {
+            if (finished()) {
                 System.out.printf("You got it! My word was '%s'. Congratulations!\n\n",
                                   secret);
-                cont = false;
-            } else if (lives == 0) {
-                System.out.printf("You've died! I win :D the word was '%s'.\n\n", secret);
                 cont = false;
             }
         }
         afterGame();
+    }
+
+    /** Returns false if game has ended, otherwise true. */
+    private static boolean wrongGuess(char guess) {
+        lives -= 1;
+        timesWrong += 1;
+        System.out.printf("Nope! There are no %c's in my word.\n", guess);
+        if (lives > 0) {
+            System.out.printf("You have %d lives left!\n", lives);
+            if (timesWrong > 3) {
+                printGuesses();
+                timesWrong = 0;
+            }
+        } else {
+            System.out.printf("You've died! I win :D the word was '%s'.\n\n", secret);
+            return false;
+        }
+        return true;   
     }
 
     /** Asks user if they want to play another round.
@@ -171,7 +193,7 @@ public class Hangman {
      *  @param guesses is the character array containing the letters found
      *         so far. Letters that haven't been found yet are _'s.
      *  @return returns true if all letters have been found, false otherwise. */
-    private static boolean finished(char[] guesses) {
+    private static boolean finished() {
         for (char c : guesses) {
             if (c == '_') {
                 return false;
@@ -180,7 +202,7 @@ public class Hangman {
         return true;
     }
 
-    private static void cheat(char[] guesses) {
+    private static void cheat() {
         ArrayList<Integer> locations = new ArrayList<Integer>();
         for (int i = 0; i < guesses.length; i += 1) {
             if (guesses[i] == '_') {
@@ -199,7 +221,7 @@ public class Hangman {
         System.out.printf("Try '%c'\n", secret.charAt(i));
     }
 
-    private static void printGuesses(char[] guesses) {
+    private static void printGuesses() {
         for (char c : guesses) {
             System.out.print(c + " ");
         }
@@ -222,4 +244,7 @@ public class Hangman {
     private static String secret = "";
     private static int numLets = 0;
     private static int lives = 0;
+    private static int timesWrong;
+    private static Words wordsMaker;
+    private static char[] guesses;
 }

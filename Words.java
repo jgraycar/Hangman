@@ -34,14 +34,12 @@ public class Words {
 
     public void makeWords() {
         String filename = this.numLets + "letters.txt";
-        //filename = "/Users/Joel/CompSci/hgm/" + filename;
         String word;
         try {
             InputStream resource =
                 hgm.Words.class.getClassLoader().getResourceAsStream(filename);
             BufferedReader wordFile =
                 new BufferedReader(new InputStreamReader(resource));
-            //BufferedReader wordFile = new BufferedReader(new FileReader(filename));
             for (word = wordFile.readLine(); word != null; word = wordFile.readLine()) {
                 this.words.add(word);
             }
@@ -54,10 +52,65 @@ public class Words {
         }
     }
 
-    public String getWord() {
+    protected void clearWordsByLetter(char guess) {
+        ArrayList<String> wordsToRemove = new ArrayList<String>();
+        for (String wrd : this.words) {
+            if (wrd.contains(guess + "")) {
+                wordsToRemove.add(wrd);
+            }
+        }
+        for (String word : wordsToRemove) {
+            this.words.remove(word);
+        }
+    }
+
+    protected void clearWordsBySpot(char[] guesses) {
+        ArrayList<Integer> letSpots = new ArrayList<Integer>(14);
+        for (int i = 0; i < guesses.length; i += 1) {
+            if (guesses[i] != '_') {
+                letSpots.add(i);
+            }
+        }
+        ArrayList<String> wordsToRemove = new ArrayList<String>();
+        for (String wrd : this.words) {
+            wordLoop:
+            for (Integer in : letSpots) {
+                if (wrd.charAt(in) != guesses[in]) {
+                    wordsToRemove.add(wrd);
+                    break;
+                } else {
+                    for (int k = 0; k < wrd.length(); k += 1) {
+                        if (k != in && wrd.charAt(k) == guesses[in]) {
+                            wordsToRemove.add(wrd);
+                            break wordLoop;
+                        }
+                    }
+                }
+            }
+        }
+        for (String wrdR : wordsToRemove) {
+            this.words.remove(wrdR);
+        }
+    }
+
+    protected boolean canSwitch() {
+        if (this.words.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    protected String getWord() {
         Random rand = new Random();
         int arrSize = this.words.size();
-        return this.words.get(rand.nextInt(arrSize - 1));
+        String word;
+        if (arrSize > 1) {
+            word = this.words.get(rand.nextInt(arrSize - 1));
+        } else {
+            word = this.words.get(0);
+        }
+        this.words.remove(word);
+        return word;
     }
 
     private ArrayList<String> words;
