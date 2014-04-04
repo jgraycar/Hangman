@@ -1,5 +1,4 @@
 abs
-aby
 ace
 act
 add
@@ -12,7 +11,6 @@ aid
 ail
 aim
 air
-ait
 ale
 all
 amp
@@ -31,13 +29,10 @@ ask
 asp
 ass
 ate
-auk
 awe
 awl
 awn
 axe
-azo
-baa
 bad
 bag
 bah
@@ -50,7 +45,6 @@ bed
 bee
 beg
 bet
-bey
 bib
 bid
 big
