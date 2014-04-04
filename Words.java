@@ -33,9 +33,55 @@ public class Words {
     }
 
     public void makeWords() {
-        WordBank wordBank = new WordBank2();
-        wordBank.giveWords();
-        String filename = this.numLets + "letters.txt";
+        WordBank wordBank = null;
+        switch(this.numLets) {
+        case 2:
+            wordBank = new WordBank2();
+            break;
+        case 3:
+            wordBank = new WordBank3();
+            break;
+        case 4:
+            wordBank = new WordBank4();
+            break;
+        case 5:
+            wordBank = new WordBank5();
+            break;
+        case 6:
+            wordBank = new WordBank6();
+            break;
+        case 7:
+            wordBank = new WordBank7();
+            break;
+        case 8:
+            wordBank = new WordBank8();
+            break;
+        case 9:
+            wordBank = new WordBank9();
+            break;
+        case 10:
+            wordBank = new WordBank10();
+            break;
+        case 11:
+            wordBank = new WordBank11();
+            break;
+        case 12:
+            wordBank = new WordBank12();
+            break;
+        case 13:
+            wordBank = new WordBank13();
+            break;
+        case 14:
+            wordBank = new WordBank14();
+            break;
+        default:
+            break;
+        }
+        String[] wordsArray = wordBank.giveWords();
+        for (String wrd : wordsArray) {
+            words.add(wrd);
+        }
+        /**String filename = this.numLets + "letters.txt";
         String word;
         try {
             InputStream resource =
@@ -51,7 +97,7 @@ public class Words {
         } catch (IOException io) {
             System.err.printf("Error: IOException arose while creating wordbank.\n");
             System.exit(1);
-        }
+            }*/
     }
 
     protected void clearWordsByLetter(char guess) {
