@@ -45,28 +45,118 @@ public class Words {
             wordBank = new WordBank4();
             break;
         case 5:
-            wordBank = new WordBank5();
+            wordBank = new WordBank5_1();
+            String[] w5 = wordBank.giveWords();
+            for (String w : w5) {
+                words.add(w);
+            }
+            wordBank = new WordBank5_2();
             break;
         case 6:
-            wordBank = new WordBank6();
+            wordBank = new WordBank6_1();
+            String[] w6 = wordBank.giveWords();
+            for (String w : w6) {
+                words.add(w);
+            }
+            wordBank = new WordBank6_2();
+            w6 = wordBank.giveWords();
+            for (String wr : w6) {
+                words.add(wr);
+            }
+            wordBank = new WordBank6_3();
             break;
         case 7:
-            wordBank = new WordBank7();
+            wordBank = new WordBank7_1();
+            String[] w7 = wordBank.giveWords();
+            for (String w : w7) {
+                words.add(w);
+            }
+            wordBank = new WordBank7_2();
+            w7 = wordBank.giveWords();
+            for (String w : w7) {
+                words.add(w);
+            }
+            wordBank = new WordBank7_3();
+            w7 = wordBank.giveWords();
+            for (String w : w7) {
+                words.add(w);
+            }
+            wordBank = new WordBank7_4();
+            w7 = wordBank.giveWords();
+            for (String w : w7) {
+                words.add(w);
+            }
+            wordBank = new WordBank7_5();
             break;
         case 8:
-            wordBank = new WordBank8();
+            wordBank = new WordBank8_1();
+            String[] w8 = wordBank.giveWords();
+            for (String w : w8) {
+                words.add(w);
+            }
+            wordBank = new WordBank8_2();
+            w8 = wordBank.giveWords();
+            for (String w : w8) {
+                words.add(w);
+            }
+            wordBank = new WordBank8_3();
+            w8 = wordBank.giveWords();
+            for (String w : w8) {
+                words.add(w);
+            }
+            wordBank = new WordBank8_4();
+            w8 = wordBank.giveWords();
+            for (String w : w8) {
+                words.add(w);
+            }
+            wordBank = new WordBank8_5();
             break;
         case 9:
-            wordBank = new WordBank9();
+            wordBank = new WordBank9_1();
+            String[] w9 = wordBank.giveWords();
+            for (String w : w9) {
+                words.add(w);
+            }
+            wordBank = new WordBank9_2();
+            w9 = wordBank.giveWords();
+            for (String w : w9) {
+                words.add(w);
+            }
+            wordBank = new WordBank9_3();
+            w9 = wordBank.giveWords();
+            for (String w : w9) {
+                words.add(w);
+            }
+            wordBank = new WordBank9_4();
             break;
         case 10:
-            wordBank = new WordBank10();
+            wordBank = new WordBank10_1();
+            String[] w10 = wordBank.giveWords();
+            for (String w : w10) {
+                words.add(w);
+            }
+            wordBank = new WordBank10_2();
+            w10 = wordBank.giveWords();
+            for (String w : w10) {
+                words.add(w);
+            }
+            wordBank = new WordBank10_3();
             break;
         case 11:
-            wordBank = new WordBank11();
+            wordBank = new WordBank11_1();
+            String[] w11 = wordBank.giveWords();
+            for (String w : w11) {
+                words.add(w);
+            }
+            wordBank = new WordBank11_2();
             break;
         case 12:
-            wordBank = new WordBank12();
+            wordBank = new WordBank12_1();
+            String[] w12 = wordBank.giveWords();
+            for (String w : w12) {
+                words.add(w);
+            }
+            wordBank = new WordBank12_2();
             break;
         case 13:
             wordBank = new WordBank13();
@@ -75,6 +165,8 @@ public class Words {
             wordBank = new WordBank14();
             break;
         default:
+            System.err.println("Error: number of letters not 2-14.");
+            System.exit(1);
             break;
         }
         String[] wordsArray = wordBank.giveWords();
