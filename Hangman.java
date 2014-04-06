@@ -29,19 +29,16 @@ public class Hangman {
         while (cont) {
             System.out.print("> ");
             String line = inp.nextLine();
-            if (checkInt(line)) {
-                try {
-                    int num = Integer.parseInt(line);
-                    if (num > 1 && num < 15) {
-                        numLets = num;
-                        numLetsStr = line;
-                        cont = false;
-                    } else {
-                        System.out.println("Please input a number between 2 and 14.");
-                    }
-                } catch (NumberFormatException num) {
+            try {
+                int num = Integer.parseInt(line);
+                if (num > 1 && num < 15) {
+                    numLets = num;
+                    numLetsStr = line;
+                    cont = false;
+                } else {
+                    System.out.println("Please input a number between 2 and 14.");
                 }
-            } else {
+            } catch (NumberFormatException num) {
                 System.out.printf("Sorry, %s is not a number!", line);
                 System.out.println(" Please input a number between 2 and 14.");
             }
@@ -54,25 +51,22 @@ public class Hangman {
         while (cont) {
             System.out.print("> ");
             String line = inp.nextLine();
-            if (checkInt(line)) {
-                try {
-                    int num = Integer.parseInt(line);
-                    if (num > 0 && num < 100) {
+            try {
+                int num = Integer.parseInt(line);
+                if (num > 0 && num < 100) {
                         lives = num;
                         cont = false;
-                    } else if (num == 0) {
-                        Random rand = new Random();
-                        lives = rand.nextInt(6) + 5;
+                } else if (num == 0) {
+                    Random rand = new Random();
+                    lives = rand.nextInt(6) + 5;
                         System.out.printf("I'll be nice and give you %d lives.\n",
                                           lives);
                         cont = false;
                         
-                    } else {
-                        System.out.println("Please input a number between 1 and 99.");
-                    }
-                } catch (NumberFormatException num) {
+                } else {
+                    System.out.println("Please input a number between 1 and 99.");
                 }
-            } else {
+            } catch (NumberFormatException num) {
                 System.out.printf("Sorry, %s is not a number!", line);
                 System.out.println(" Please input a number between 1 and 99.");
             }
@@ -230,15 +224,6 @@ public class Hangman {
             System.out.print(c + " ");
         }
         System.out.println();
-    }
-
-    private static boolean checkInt(String line) {
-        try {
-            Integer.parseInt(line);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 
     public static void setSecret(String word) {
