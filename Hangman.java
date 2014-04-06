@@ -62,6 +62,10 @@ public class Hangman {
                         cont = false;
                     } else if (num == 0) {
                         Random rand = new Random();
+                        lives = rand.nextInt(6) + 5;
+                        System.out.printf("I'll be nice and give you %d lives.\n",
+                                          lives);
+                        cont = false;
                         
                     } else {
                         System.out.println("Please input a number between 1 and 99.");
