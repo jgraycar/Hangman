@@ -190,10 +190,59 @@ public class HangmanGUI {
         letSoFar.setText(guessInProgress.toString());
     }
 
+
+    private static JButton makeLetterButton(char let) {
+        String str = Character.toString(let);
+        return new JButton(str);
+    }
+
+    private void checkGuess(char guess) {
+        indices = new ArrayList<Integer>();
+        int index = secret.indexOf(guess);
+        while (index != -1) {
+            indices.add(index);
+            index = secret.indexOf(guess, index + 1);
+        }
+        if (!firstTime) {
+            wordMaker.clearWordsByLetter(guess);
+        }
+        if (indices.size() > 0) {
+            if (!firstTime && wordMaker.canSwitch()) {
+                secret = wordMaker.getWord();
+                wrongGuess();
+                System.out.println(secret);
+            } else {
+                firstTime = false;
+                for (Integer i : indices) {
+                    guesses[i.intValue()] = guess;
+                }
+                wordMaker.clearWordsBySpot(guesses);
+                game.repaint();
+                checkForWin();
+            }
+        } else {
+            wrongGuess();
+        }
+    }
+
     private void wrongGuess() {
         numLives -= 1;
         if (numLives == 0) {
             winState = 0;
+            endGame();
+        }
+    }
+
+    private void checkForWin() {
+        boolean finished = true;
+        for (Character ch : guesses) {
+            if (ch == '_') {
+                finished = false;
+            }
+        }
+        if (finished) {
+            winState = 1;
+            updateLetSoFar();
             endGame();
         }
     }
@@ -229,53 +278,6 @@ public class HangmanGUI {
         frame.getContentPane().add(BorderLayout.CENTER, endScreen);
     }
 
-    private static JButton makeLetterButton(char let) {
-        String str = Character.toString(let);
-        return new JButton(str);
-    }
-
-    private void checkGuess(char guess) {
-        indices = new ArrayList<Integer>();
-        int index = secret.indexOf(guess);
-        while (index != -1) {
-            indices.add(index);
-            index = secret.indexOf(guess, index + 1);
-        }
-        if (!firstTime) {
-            wordMaker.clearWordsByLetter(guess);
-        }
-        if (indices.size() > 0) {
-            if (!firstTime && wordMaker.canSwitch()) {
-                wrongGuess();
-                secret = wordMaker.getWord();
-                System.out.println(secret);
-            } else {
-                firstTime = false;
-                for (Integer i : indices) {
-                    guesses[i.intValue()] = guess;
-                }
-                wordMaker.clearWordsBySpot(guesses);
-                game.repaint();
-                checkForWin();
-            }
-        } else {
-            wrongGuess();
-        }
-    }
-
-    private void checkForWin() {
-        boolean finished = true;
-        for (Character ch : guesses) {
-            if (ch == '_') {
-                finished = false;
-            }
-        }
-        if (finished) {
-            winState = 1;
-            updateLetSoFar();
-            endGame();
-        }
-    }
 
 
 
