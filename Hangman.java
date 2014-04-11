@@ -118,6 +118,9 @@ public class Hangman {
                 indices.add(index);
                 index = secret.indexOf(guess, index + 1);
             }
+            if (!firstTime) {
+                wordsMaker.clearWordsByLetter(guess);
+            }
             if (indices.size() > 0) {
                 if (!firstTime && wordsMaker.canSwitch()) {
                     setSecret(wordsMaker.getWord());
@@ -133,7 +136,6 @@ public class Hangman {
                 timesWrong = 0;
             } else {
                 cont = wrongGuess(guess);
-                wordsMaker.clearWordsByLetter(guess);
                 continue;
             }
             if (finished()) {
