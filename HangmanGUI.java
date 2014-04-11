@@ -48,8 +48,6 @@ public class HangmanGUI {
         Font bigFont = new Font("serif", Font.BOLD, 70);
         opening.setFont(bigFont);
         opening.addActionListener(new OpeningActionListener());
-        opening.setOpaque(true);
-        opening.setBackground(Color.gray);
         panelLets = new LetPanelMain();
         row1 = new LetPanelSub();
         row2 = new LetPanelSub();
