@@ -219,6 +219,9 @@ public class HangmanGUI {
                 checkForWin();
             }
         } else {
+            if (firstTime) {
+                wordMaker.clearWordsByLetter(guess);
+            }
             wrongGuess();
         }
     }
@@ -290,6 +293,9 @@ public class HangmanGUI {
                 if (state == 0) {
                     if (numProgress > 1 && numProgress < 15) {
                         numLets = numProgress;
+                        if (numLets == 14) {
+                            frame.setSize(1100, 500);
+                        }
                         state = 1;
                         pick.setText("Now pick how many lives you want.");
                     } else {
@@ -298,11 +304,11 @@ public class HangmanGUI {
                     inProgress = "0";
                     display.repaint();
                 } else {
-                    if (numProgress > 0 && numProgress < 100) {
+                    if (numProgress > 0 && numProgress < 26) {
                         numLives = numProgress;
                         playGame();
                     } else {
-                        pick.setText("Please pick a number between 1 and 99.");
+                        pick.setText("Please pick a number between 1 and 25.");
                         inProgress = "0";
                         display.repaint();
                     }
@@ -381,6 +387,7 @@ public class HangmanGUI {
             }
             endScreen.setVisible(false);
             panelNums.setVisible(true);
+            frame.setSize(1000, 500);
             setupGame();
         }
     }
