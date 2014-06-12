@@ -1,0 +1,128 @@
+<project name="Hangman" default = "run-app" basedir=".">
+  <description>
+    Build file for EncoderGUI
+  </description>
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+  <property name="keystore" location="/Users/Joel/.keystore"/>
+  <property name="key-alias" value="HangmanKey"/>
+  <property name="store-pass" value="bibbles"/>
+  <property name="Main-Class" value="hgm.HangmanGUI"/>
+  <property name="builder" value="Joel Graycar"/>
+  <property name="volname" value="Hangman"/>
+  <property environment="env"/>
+
+  <path id="build.classpath">
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+      <exclude name="**/appbundler*"/>
+    </fileset>
+  </path>
+
+  <target name="display-classpath">
+    <!-- Write the classpath to the console. Helpful for debugging -->
+    <!-- Create one line per classpath element-->
+    <pathconvert pathsep="${line.separator}"
+                 property="echo.classpath"
+                 refid="build.classpath"/>
+    <!-- Write the result to the console -->
+    <echo message="build.classpath:" />
+    <echo message="${echo.classpath}" />
+  </target>
+
+  <target name="init">
+    <!-- Create time stamp -->
+    <tstamp/>
+    <!-- Create build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+          description="compile source" >
+    <!-- Compile java code from ${src} into ${build} -->
+    <javac includeantruntime="false" srcdir="${src}" destdir="${build}"
+           classpathref="build.classpath"/>
+  </target>
+
+
+  <target name="jar" depends="compile"
+          description="generate the distribution jar file" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+    <!-- Set up jar classpath -->
+    <manifestclasspath property="jar.classpath"
+                       jarfile="${dist}/lib/Encoder.jar">
+      <classpath refid="build.classpath"/>
+    </manifestclasspath>
+    <!-- Put everything in ${build} and resources into Encoder.jar file -->
+    <jar jarfile="${dist}/lib/${volname}.jar">
+      <fileset dir="${build}"/>
+      <fileset dir="${src}/resources"/>
+      <manifest>
+        <attribute name="Main-Class" value="${Main-Class}"/>
+        <attribute name="Built-By" value="${builder}"/>
+        <attribute name="Class-Path" value="${jar.classpath}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run-jar" depends="jar">
+    <java jar="${dist}/lib/${volname}.jar" fork="true"/>
+  </target>
+
+  <target name="clean"
+          description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees, and dmg file -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <delete file="${volname}.dmg"/>
+  </target>
+
+  <target name="sign-jar" depends="jar"
+          description="sign jar file using jarsigner tool.">
+    <signjar jar="${dist}/lib/${volname}.jar"
+             alias="${key-alias}"
+             keystore="${keystore}"
+             storepass="${store-pass}"/>
+  </target>
+
+  <taskdef name="bundleapp"
+             classname="com.oracle.appbundler.AppBundlerTask"   
+             classpath="lib/appbundler-1.0.jar" />
+
+  <target name="bundle-app" depends="jar">
+      <bundleapp outputdirectory="dist"
+            name="${volname}"
+            displayname="${volname}"
+            identifier="hgm.HangmanGUI"
+            mainclassname="hgm.HangmanGUI"
+            icon="${src}/resources/app_icon.icns">
+            <runtime dir="${env.JAVA_HOME}"/>
+            <classpath file="dist/lib/${volname}.jar" />
+            <classpath dir="lib"/>
+      </bundleapp>
+  </target>
+
+  <target name="run-app" depends="bundle-app">
+    <exec executable="/usr/bin/open" os="Mac OS X" failonerror="true">
+      <arg value="${dist}/${volname}.app"/>
+    </exec>
+  </target>
+
+  <target name="dmg" depends="bundle-app"
+          description="create disc image file containing app file">
+    <delete file="${volname}.dmg"/>
+    <exec executable="/usr/bin/hdiutil" os="Mac OS X" failonerror="true">
+      <arg value="create"/>
+      <arg value="-srcfolder"/>
+      <arg value="dist/${volname}.app"/>
+      <arg value="-fs"/>
+      <arg value="MS-DOS"/>
+      <arg value="-volname"/>
+      <arg value="${volname}"/>
+      <arg value="./${volname}"/>
+    </exec>
+  </target>
+
+</project>
