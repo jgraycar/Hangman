@@ -151,7 +151,6 @@ public class HangmanGUI {
         wordMaker = new Words(numLets + "");
         wordMaker.makeWords();
         secret = wordMaker.getWord();
-        System.out.println(secret);
         guesses = new char[secret.length()];
         Arrays.fill(guesses, '_');
         display.setVisible(false);
@@ -208,7 +207,6 @@ public class HangmanGUI {
             if (!firstTime && wordMaker.canSwitch()) {
                 secret = wordMaker.getWord();
                 wrongGuess();
-                System.out.println(secret);
             } else {
                 firstTime = false;
                 for (Integer i : indices) {
@@ -262,10 +260,8 @@ public class HangmanGUI {
         endMsg.setAlignmentX(Component.CENTER_ALIGNMENT);
         endScreen.add(endMsg);
         if (winState == 0) {
-            // player lost
             endMsg.setText("You lost! The word was \"" + secret + "\"");
         } else {
-            // player won
             endMsg.setText("You won!");
         }
         playAgain = new JButton("Play again");
@@ -279,10 +275,17 @@ public class HangmanGUI {
         frame.getContentPane().add(BorderLayout.CENTER, endScreen);
     }
 
+    /** Display an error, with message MSG.
+     *  @param msg is the error message to be displayed. */
+    private void popupErr(String msg) {
+        Toolkit.getDefaultToolkit().beep();
+        JOptionPane.showMessageDialog(null, msg, "Error",
+                                      JOptionPane.ERROR_MESSAGE);
+    }
 
 
 
-    // ------------------------------- CLASSES ------------------------------------
+    // ------------------------------ Listeners --------------------------------
 
 
 
@@ -299,7 +302,7 @@ public class HangmanGUI {
                         state = 1;
                         pick.setText("Now pick how many lives you want.");
                     } else {
-                        pick.setText("Please pick a number between 2 and 14.");
+                        popupErr("Please pick a number between 2 and 14.");
                     }
                     inProgress = "0";
                     display.repaint();
@@ -308,7 +311,7 @@ public class HangmanGUI {
                         numLives = numProgress;
                         playGame();
                     } else {
-                        pick.setText("Please pick a number between 1 and 25.");
+                        popupErr("Please pick a number between 1 and 25.");
                         inProgress = "0";
                         display.repaint();
                     }
